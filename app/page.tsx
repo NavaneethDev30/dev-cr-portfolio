@@ -3,11 +3,15 @@ import Image from "next/image"
 import Navbar from "@/components/Navbar"
 import About from "@/components/About"
 import Skills from "@/components/Skills"
-import Projects from "@/components/Projects"
+
 import Contact from "@/components/Contact"
 
 const LightRaysBackground = dynamic(() => import("@/components/LightRaysBackground"), { 
     loading: () => <div className="absolute inset-0 bg-black" />
+})
+
+const Projects = dynamic(() => import("@/components/Projects"), { 
+    loading: () => <div className="w-full h-[500px] flex items-center justify-center text-white/50">Loading Projects...</div>
 })
 
 export default function Page() {

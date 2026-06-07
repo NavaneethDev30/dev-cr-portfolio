@@ -117,8 +117,25 @@ const useAnimationLoop = (trackRef, targetVelocity, seqWidth, seqHeight, isHover
   }, [targetVelocity, seqWidth, seqHeight, isHovered, hoverSpeed, isVertical, trackRef]);
 };
 
-export const LogoLoop = memo(
-  ({
+/**
+ * @param {Object} props
+ * @param {Array<any>} props.logos
+ * @param {number} [props.speed=120]
+ * @param {string} [props.direction='left']
+ * @param {string|number} [props.width='100%']
+ * @param {number} [props.logoHeight=28]
+ * @param {number} [props.gap=32]
+ * @param {boolean} [props.pauseOnHover]
+ * @param {number} [props.hoverSpeed]
+ * @param {boolean} [props.fadeOut=false]
+ * @param {string} [props.fadeOutColor]
+ * @param {boolean} [props.scaleOnHover=false]
+ * @param {Function} [props.renderItem]
+ * @param {string} [props.ariaLabel='Partner logos']
+ * @param {string} [props.className]
+ * @param {Object} [props.style]
+ */
+export const LogoLoop = ({
     logos,
     speed = 120,
     direction = 'left',
@@ -313,8 +330,7 @@ export const LogoLoop = memo(
         </div>
       </div>
     );
-  }
-);
+  };
 
 LogoLoop.displayName = 'LogoLoop';
 

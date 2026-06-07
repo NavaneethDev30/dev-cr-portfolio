@@ -1,4 +1,6 @@
-import LogoLoop from '@/components/LogoLoop';
+'use client';
+
+import Image from 'next/image';
 
 const techLogos = [
   { src: "/skills/blender.svg", alt: "Blender", title: "Blender" },
@@ -19,20 +21,37 @@ function Skills() {
                     Skills and Technologies
                 </h2>
             </div>
-             <div style={{ height: '200px', position: 'relative', overflow: 'hidden'}}>
-                    {/* Basic horizontal loop */}
-                    <LogoLoop
-                        logos={techLogos}
-                        speed={100}
-                        direction="left"
-                        logoHeight={60}
-                        gap={60}
-                        hoverSpeed={0}
-                        scaleOnHover
-                        fadeOut
-                        fadeOutColor="#000000ff"
-                        ariaLabel="Technology partners"
-                    />
+            <div className="relative w-full overflow-hidden" style={{ height: '100px' }}>
+                <div className="flex w-max animate-marquee hover:animate-pause">
+                    {/* Original list */}
+                    {techLogos.map((item, index) => (
+                        <div key={`orig-${index}`} className="relative h-[60px] w-[120px] mx-8 flex-shrink-0 flex items-center justify-center">
+                            <Image 
+                                src={item.src} 
+                                alt={item.alt} 
+                                width={120}
+                                height={60}
+                                quality={50} // Compress image quality to 50%
+                                loading="lazy"
+                                className="h-[60px] w-auto object-contain pointer-events-none"
+                            />
+                        </div>
+                    ))}
+                    {/* Duplicated list for seamless loop */}
+                    {techLogos.map((item, index) => (
+                        <div key={`dup-${index}`} className="relative h-[60px] w-[120px] mx-8 flex-shrink-0 flex items-center justify-center">
+                            <Image 
+                                src={item.src} 
+                                alt={item.alt} 
+                                width={120}
+                                height={60}
+                                quality={50} // Compress image quality to 50%
+                                loading="lazy"
+                                className="h-[60px] w-auto object-contain pointer-events-none"
+                            />
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     )
