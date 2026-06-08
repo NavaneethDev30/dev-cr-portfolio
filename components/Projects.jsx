@@ -45,6 +45,21 @@ export default function Projects() {
                     <ProjectCard key={index} project={project} index={index} />
                 ))}
             </div>
+
+            {/* View More Button */}
+            <div className="w-full flex justify-center mt-12 md:mt-16 relative z-20">
+                <a 
+                    href="https://www.youtube.com/@NavaneethDev" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="group relative inline-flex items-center justify-center px-8 py-3 md:px-10 md:py-4 font-semibold text-white transition-all duration-300 ease-in-out bg-white/5 border border-white/20 rounded-full hover:bg-cyan-500/20 hover:border-cyan-500/50 hover:text-cyan-400 shadow-[0_0_0_rgba(34,211,238,0)] hover:shadow-[0_0_20px_rgba(34,211,238,0.3)] backdrop-blur-sm"
+                >
+                    <span className="tracking-widest uppercase text-xs md:text-sm">View More on YouTube</span>
+                    <svg className="w-4 h-4 md:w-5 md:h-5 ml-2 md:ml-3 transition-transform duration-300 ease-in-out group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                </a>
+            </div>
         </div>
     )
 }
