@@ -24,14 +24,16 @@ interface Strand {
   pulseY: number;
   pulseSize: number;
   speed: number;
+  pulseGrad: CanvasGradient | null; // cached gradient
 }
 
 export default function LightRaysBackground({
-  beamDensity = 150, // Dense curtain of light
+  beamDensity = 60, // FIX 3: Changed default beamDensity from 150 to 60
 }: LightRaysProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const strandsRef = useRef<Strand[]>([]);
+  const isVisibleRef = useRef(true); // FIX 1: Added visibility ref to pause canvas when off screen
   
   const mouse = useRef({ x: -1000, y: -1000, isHovering: false });
 
@@ -46,6 +48,15 @@ export default function LightRaysBackground({
     const canvas = canvasRef.current;
     const container = containerRef.current;
     if (!canvas || !container) return;
+
+    // FIX 1: Added IntersectionObserver to track if hero is visible
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisibleRef.current = entry.isIntersecting;
+      },
+      { threshold: 0 }
+    );
+    observer.observe(container);
 
     const ctx = canvas.getContext('2d', { alpha: false }); 
     if (!ctx) return;
@@ -112,6 +123,7 @@ export default function LightRaysBackground({
           pulseY: Math.random() * -height,
           pulseSize: Math.random() * 40 + 20, // Tiny energy streaks
           speed: Math.random() * 150 + 50, // Subtle, slow movement
+          pulseGrad: null,
         });
       }
       strandsRef.current = newStrands;
@@ -136,6 +148,12 @@ export default function LightRaysBackground({
     const render = (timeNow: number) => {
       const dt = Math.min((timeNow - lastTime) / 1000, 0.05);
       lastTime = timeNow;
+
+      // FIX 1: Early return skipping all drawing if canvas is off screen
+      if (!isVisibleRef.current) {
+        animationFrameId = requestAnimationFrame(render);
+        return;
+      }
 
       ctx.fillStyle = '#000000';
       ctx.fillRect(0, 0, width, height);
@@ -233,7 +251,7 @@ export default function LightRaysBackground({
         ctx.lineCap = 'round';
         
         if (strand.layer === 'background') {
-          ctx.shadowBlur = 10;
+          ctx.shadowBlur = 0; // FIX 2: Disabled shadowBlur for background strands to save CPU/GPU
           ctx.shadowColor = `rgba(150, 200, 255, ${strand.baseOpacity})`;
         } else {
           ctx.shadowBlur = 0; 
@@ -246,13 +264,21 @@ export default function LightRaysBackground({
           strand.pulseY = -strand.pulseSize;
         }
 
-        const pulseGrad = ctx.createLinearGradient(0, strand.pulseY - strand.pulseSize, 0, strand.pulseY + strand.pulseSize);
-        pulseGrad.addColorStop(0, 'rgba(255, 255, 255, 0)');
-        pulseGrad.addColorStop(0.5, `rgba(255, 255, 255, ${strand.baseOpacity * 1.2})`);
-        pulseGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
-        
-        ctx.strokeStyle = pulseGrad;
+        // Only create gradient if it doesn't exist yet (once per strand, not per frame)
+        if (!strand.pulseGrad) {
+          const g = ctx.createLinearGradient(0, 0, 0, strand.pulseSize * 2);
+          g.addColorStop(0, 'rgba(255, 255, 255, 0)');
+          g.addColorStop(0.5, `rgba(255, 255, 255, ${strand.baseOpacity * 1.2})`);
+          g.addColorStop(1, 'rgba(255, 255, 255, 0)');
+          strand.pulseGrad = g;
+        }
+
+        // Apply it with a transform instead of recreating at new Y position
+        ctx.save();
+        ctx.translate(0, strand.pulseY - strand.pulseSize);
+        ctx.strokeStyle = strand.pulseGrad;
         ctx.stroke();
+        ctx.restore();
       }
 
       ctx.globalCompositeOperation = 'source-over';
@@ -266,6 +292,7 @@ export default function LightRaysBackground({
     return () => {
       window.removeEventListener('resize', resize);
       cancelAnimationFrame(animationFrameId);
+      observer.disconnect(); // FIX 1: Disconnect observer on cleanup
     };
   }, [beamDensity]);
 

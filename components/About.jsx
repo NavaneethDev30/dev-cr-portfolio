@@ -6,14 +6,17 @@ const CircularGallery = dynamic(() => import("@/components/CircularGallery"), {
 
 function About() {
     return (
-        <main id="about" className="w-full pt-24 pb-24 text-white">
-            <div className="flex flex-col w-full max-w-5xl mx-auto px-4 mt-15">
-                <p className="text-gray-400 tracking-widest uppercase mb-2 ml-2">Hi, I am</p>
-                <p className="text-6xl sm:text-8xl font-bold tracking-tight mb-4 text-white">NAVANEETH DEV</p> 
-                <p className="text-gray-400 tracking-widest uppercase self-end mr-4 sm:mr-12">and I work on</p>       
+        // Adjusted padding for mobile
+        <main id="about" className="w-full pt-16 md:pt-24 pb-16 md:pb-24 text-white">
+            <div className="flex flex-col w-full max-w-5xl mx-auto px-4 mt-8 md:mt-15">
+                {/* Scaled text sizes using sm: and md: prefixes */}
+                <p className="text-gray-400 text-xs sm:text-sm tracking-widest uppercase mb-2 ml-1 sm:ml-2">Hi, I am</p>
+                <p className="text-4xl sm:text-6xl md:text-8xl font-bold tracking-tight mb-2 md:mb-4 text-white leading-none">NAVANEETH DEV</p> 
+                <p className="text-gray-400 text-xs sm:text-sm tracking-widest uppercase self-end mr-2 sm:mr-12">and I work on</p>       
             </div>
             
-            <div className="-mt-8 mb-32" style={{ height: '600px', position: 'relative' }}>
+            {/* Reduced gallery wrapper height on mobile (350px/450px) and kept 600px on desktop */}
+            <div className="-mt-4 md:-mt-8 mb-16 md:mb-32 h-[350px] sm:h-[450px] md:h-[600px] relative">
                 <CircularGallery
                     bend={1}
                     textColor="#ffffff"
