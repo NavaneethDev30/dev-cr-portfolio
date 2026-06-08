@@ -4,8 +4,17 @@ import { projectsData } from "@/lib/projects";
 import YouTubeFacade from './YouTubeFacade';
 
 const ProjectCard = ({ project, index }) => {
-    // Extract YouTube ID
-    const videoId = project.video?.split('/shorts/')[1]?.split('?')[0];
+    // Extract YouTube ID from multiple possible formats
+    let videoId = null;
+    if (project.video) {
+        if (project.video.includes('/shorts/')) {
+            videoId = project.video.split('/shorts/')[1]?.split('?')[0];
+        } else if (project.video.includes('youtu.be/')) {
+            videoId = project.video.split('youtu.be/')[1]?.split('?')[0];
+        } else if (project.video.includes('watch?v=')) {
+            videoId = project.video.split('watch?v=')[1]?.split('&')[0];
+        }
+    }
 
     if (!videoId) return null;
 

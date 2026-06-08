@@ -29,7 +29,7 @@ export default function RootLayout({
       className={cn("h-full", "antialiased", orbitron.className, "font-sans", geist.variable)}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col" suppressHydrationWarning>
+      <body className="min-h-full flex flex-col selection:bg-cyan-500 selection:text-white" suppressHydrationWarning>
       {/* <NavBar/> */}
       
 
