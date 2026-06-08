@@ -1,4 +1,6 @@
-import dynamic from "next/dynamic"
+export const dynamic = 'force-static';
+
+import dynamicImport from "next/dynamic"
 import Image from "next/image"
 import Navbar from "@/components/Navbar"
 import About from "@/components/About"
@@ -6,11 +8,11 @@ import Skills from "@/components/Skills"
 
 import Contact from "@/components/Contact"
 
-const LightRaysBackground = dynamic(() => import("@/components/LightRaysBackground"), { 
+const LightRaysBackground = dynamicImport(() => import("@/components/LightRaysBackground"), { 
     loading: () => <div className="absolute inset-0 bg-black" />
 })
 
-const Projects = dynamic(() => import("@/components/Projects"), { 
+const Projects = dynamicImport(() => import("@/components/Projects"), { 
     loading: () => <div className="w-full h-[500px] flex items-center justify-center text-white/50">Loading Projects...</div>
 })
 
