@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './ReflectiveCard.css';
 import { Fingerprint, Activity, Handshake } from 'lucide-react';
 
@@ -41,6 +41,40 @@ const ReflectiveCard = ({
     '--overlay-color': overlayColor,
     '--text-color': color,
     '--saturation': saturation
+  };
+
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [status, setStatus] = useState({ loading: false, success: false, error: '' });
+
+  const handleSubmit = async () => {
+    if (!formData.name || !formData.email || !formData.message) {
+      setStatus({ ...status, error: 'Please fill all fields' });
+      return;
+    }
+    
+    setStatus({ loading: true, success: false, error: '' });
+    
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to send message');
+      }
+      
+      setStatus({ loading: false, success: true, error: '' });
+      setFormData({ name: '', email: '', message: '' });
+      setTimeout(() => setStatus(s => ({ ...s, success: false })), 3000);
+    } catch (err) {
+      setStatus({ loading: false, success: false, error: err.message || 'Network error' });
+    }
   };
 
   return (
@@ -115,10 +149,18 @@ const ReflectiveCard = ({
                 className="bg-transparent border-b border-white/30 text-center text-white placeholder:text-white/50 focus:outline-none focus:border-white w-full max-w-[300px] transition-colors" 
                 type="text" 
                 placeholder="Enter Your Name" 
+                value={formData.name}
+                onChange={(e) => setFormData({...formData, name: e.target.value})}
               />
             </h2>
             <p className="user-role">
-              <input type="text" placeholder='Enter your Email' className='bg-transparent border-b border-white/30 text-center text-white/80 placeholder:text-white/40 focus:outline-none focus:border-white w-full max-w-[250px] transition-colors mt-2 text-sm' />
+              <input 
+                type="text" 
+                placeholder='Enter your Email' 
+                className='bg-transparent border-b border-white/30 text-center text-white/80 placeholder:text-white/40 focus:outline-none focus:border-white w-full max-w-[250px] transition-colors mt-2 text-sm' 
+                value={formData.email}
+                onChange={(e) => setFormData({...formData, email: e.target.value})}
+              />
             </p>
           </div>
         </div>
@@ -129,12 +171,24 @@ const ReflectiveCard = ({
               Drop Your Message
             </span>
             <span className="value">
-              <input type="text" className='bg-transparent border-b border-white/30 text-white placeholder:text-white/40 focus:outline-none focus:border-white w-full transition-colors pb-1' placeholder='Send your Message' />
+              <textarea 
+                className="outline-none bg-black/20 w-full text-white/90 border border-white/10 rounded-xl p-3 focus:border-white/30 transition-colors resize-none mt-2" 
+                placeholder="Send your Message" 
+                rows="3"
+                value={formData.message} 
+                onChange={(e) => setFormData({...formData, message: e.target.value})} 
+              />
             </span>
           </div>
-          <div className="fingerprint-section">
-            <button className="flex-shrink-0 w-14 h-14 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center group hover:bg-cyan-500/20 hover:border-cyan-500/50 hover:shadow-[0_0_15px_rgba(34,211,238,0.3)] transition-all duration-300 cursor-pointer">
-              <Fingerprint size={28} className="fingerprint-icon text-zinc-400 group-hover:text-cyan-400 group-hover:!opacity-100 transition-all duration-300" />
+          <div className="fingerprint-section relative flex flex-col items-center">
+            {status.error && <span className="absolute -top-6 whitespace-nowrap text-red-400 text-[11px] font-bold tracking-wider">{status.error}</span>}
+            {status.success && <span className="absolute -top-6 whitespace-nowrap text-green-400 text-[11px] font-bold tracking-wider">Sent successfully!</span>}
+            <button 
+              onClick={handleSubmit}
+              disabled={status.loading}
+              className={`flex-shrink-0 w-14 h-14 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center group hover:bg-cyan-500/20 hover:border-cyan-500/50 hover:shadow-[0_0_15px_rgba(34,211,238,0.3)] transition-all duration-300 cursor-pointer ${status.loading ? 'opacity-50' : ''}`}
+            >
+              <Fingerprint size={28} className={`fingerprint-icon text-zinc-400 group-hover:text-cyan-400 group-hover:!opacity-100 transition-all duration-300 ${status.loading ? 'animate-pulse text-cyan-400' : ''}`} />
             </button>
           </div>
         </div>
