@@ -59,8 +59,8 @@ const Contact = () => {
                 </div>
 
                 <div className="flex items-center justify-center w-full mt-8 md:mt-0">
-                    {/* Reduced card height from 500px to 300px on mobile */}
-                    <div className='w-full max-w-[300px] md:max-w-[400px] h-[300px] md:h-[500px] '>
+                    {/* Increased card height from 300px to 420px on mobile to prevent clipping */}
+                    <div className='w-full max-w-[300px] md:max-w-[400px] h-[420px] md:h-[500px] '>
                         <ReflectiveCard
                             overlayColor="rgba(0, 0, 0, 0.2)"
                             blurStrength={12}

@@ -180,7 +180,7 @@ const ReflectiveCard = ({
               />
             </span>
           </div>
-          <div className="fingerprint-section relative flex flex-col items-center">
+          <div className="fingerprint-section relative flex flex-col items-center flex-shrink-0">
             {status.error && <span className="absolute -top-6 whitespace-nowrap text-red-400 text-[11px] font-bold tracking-wider">{status.error}</span>}
             {status.success && <span className="absolute -top-6 whitespace-nowrap text-green-400 text-[11px] font-bold tracking-wider">Sent successfully!</span>}
             <button 
