@@ -20,7 +20,6 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-<<<<<<< HEAD
 ## Contact form email
 
 The contact API sends mail through Gmail SMTP. Set these server-side variables in `.env.local` (or your deployment's environment settings):
@@ -32,8 +31,7 @@ EMAIL_PASS=your-16-character-gmail-app-password
 
 `EMAIL_PASS` must be a Gmail app password, not your regular Gmail password. Keep both values private and restart the development server after changing them.
 
-=======
->>>>>>> e89c050e2cd5c39a5c1791002a0f3dfba47526bd
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

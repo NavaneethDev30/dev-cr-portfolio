@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import "./globals.css";
 
-import NavBar from "@/components/Navbar.jsx"
+import Navbar from "@/components/Navbar";
 import { Orbitron, Geist } from 'next/font/google';
 import { cn } from "@/lib/utils";
 

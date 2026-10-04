@@ -2,11 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import './ReflectiveCard.css';
-<<<<<<< HEAD
 import { Fingerprint, Activity, Handshake, Loader2 } from 'lucide-react';
-=======
-import { Fingerprint, Activity, Handshake } from 'lucide-react';
->>>>>>> e89c050e2cd5c39a5c1791002a0f3dfba47526bd
 
 const ReflectiveCard = ({
   blurStrength = 12,
@@ -48,7 +44,6 @@ const ReflectiveCard = ({
   };
 
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-<<<<<<< HEAD
   const [status, setStatus] = useState({ loading: false, success: false, message: '', error: '' });
 
   const handleSubmit = async () => {
@@ -71,17 +66,6 @@ const ReflectiveCard = ({
     }
     
     setStatus({ loading: true, success: false, message: '', error: '' });
-=======
-  const [status, setStatus] = useState({ loading: false, success: false, error: '' });
-
-  const handleSubmit = async () => {
-    if (!formData.name || !formData.email || !formData.message) {
-      setStatus({ ...status, error: 'Please fill all fields' });
-      return;
-    }
-    
-    setStatus({ loading: true, success: false, error: '' });
->>>>>>> e89c050e2cd5c39a5c1791002a0f3dfba47526bd
     
     try {
       const response = await fetch('/api/contact', {
@@ -89,15 +73,11 @@ const ReflectiveCard = ({
         headers: {
           'Content-Type': 'application/json',
         },
-<<<<<<< HEAD
         body: JSON.stringify({
           name: trimmedName,
           email: trimmedEmail,
           message: trimmedMessage,
         }),
-=======
-        body: JSON.stringify(formData),
->>>>>>> e89c050e2cd5c39a5c1791002a0f3dfba47526bd
       });
 
       const data = await response.json();
@@ -106,20 +86,12 @@ const ReflectiveCard = ({
         throw new Error(data.error || 'Failed to send message');
       }
       
-<<<<<<< HEAD
       const successMsg = data.message || 'Sent successfully!';
       setStatus({ loading: false, success: true, message: successMsg, error: '' });
       setFormData({ name: '', email: '', message: '' });
       setTimeout(() => setStatus(s => ({ ...s, success: false, message: '' })), 4000);
     } catch (err) {
       setStatus({ loading: false, success: false, message: '', error: err.message || 'Network error' });
-=======
-      setStatus({ loading: false, success: true, error: '' });
-      setFormData({ name: '', email: '', message: '' });
-      setTimeout(() => setStatus(s => ({ ...s, success: false })), 3000);
-    } catch (err) {
-      setStatus({ loading: false, success: false, error: err.message || 'Network error' });
->>>>>>> e89c050e2cd5c39a5c1791002a0f3dfba47526bd
     }
   };
 
@@ -227,7 +199,6 @@ const ReflectiveCard = ({
             </span>
           </div>
           <div className="fingerprint-section relative flex flex-col items-center flex-shrink-0">
-<<<<<<< HEAD
             {status.error && (
               <span className="absolute -top-6 whitespace-nowrap text-red-400 text-[11px] font-bold tracking-wider">
                 {status.error}
@@ -249,16 +220,6 @@ const ReflectiveCard = ({
               ) : (
                 <Fingerprint size={28} className="fingerprint-icon text-zinc-400 group-hover:text-cyan-400 group-hover:!opacity-100 transition-all duration-300" />
               )}
-=======
-            {status.error && <span className="absolute -top-6 whitespace-nowrap text-red-400 text-[11px] font-bold tracking-wider">{status.error}</span>}
-            {status.success && <span className="absolute -top-6 whitespace-nowrap text-green-400 text-[11px] font-bold tracking-wider">Sent successfully!</span>}
-            <button 
-              onClick={handleSubmit}
-              disabled={status.loading}
-              className={`flex-shrink-0 w-14 h-14 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center group hover:bg-cyan-500/20 hover:border-cyan-500/50 hover:shadow-[0_0_15px_rgba(34,211,238,0.3)] transition-all duration-300 cursor-pointer ${status.loading ? 'opacity-50' : ''}`}
-            >
-              <Fingerprint size={28} className={`fingerprint-icon text-zinc-400 group-hover:text-cyan-400 group-hover:!opacity-100 transition-all duration-300 ${status.loading ? 'animate-pulse text-cyan-400' : ''}`} />
->>>>>>> e89c050e2cd5c39a5c1791002a0f3dfba47526bd
             </button>
           </div>
         </div>
