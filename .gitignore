@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+<<<<<<< HEAD
+=======
+
+# ignored folders
+portfolio/
+>>>>>>> 5985a16b3dd1f14002892601cad2e757c222392d
